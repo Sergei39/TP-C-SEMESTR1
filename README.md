@@ -1,1 +1,1 @@
-# TP-C-SEMESTR1
+iz on tp 1 semestr
