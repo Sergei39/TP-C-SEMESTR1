@@ -15,7 +15,7 @@ jobs:
           command: 'apt-get update && apt-get install -y valgrind'
       - run:
           name: Start Tests
-          command: 'valgrind cmake-build-debug/Google_tests/Google_Tests_run'
+          command: 'valgrind iz-1/cmake-build-debug/Google_tests/Google_Tests_run'
       - run:
           name: Install CMAKE
           command: 'apt-get update && sudo apt-get install -y cmake'
