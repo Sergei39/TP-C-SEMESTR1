@@ -21,7 +21,7 @@ jobs:
           command: 'apt-get update && sudo apt-get install -y cmake'
       - run:
           name: Start CppCheck
-          command: 'cppcheck iz-1/*'
+          command: 'cppcheck iz-1/src/* iz-1/include/* iz-1/Google_tests/AbsoluteDateTest'
       - run:
           name: Start Tests
           command: 'valgrind iz-1/cmake-build-debug/Google_tests/Google_Tests_run'
