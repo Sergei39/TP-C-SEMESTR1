@@ -11,6 +11,9 @@ jobs:
           name: Installing GCC
           command: 'apt-get update && apt-get install -y gcc g++'
       - run:
+          name: Installing Valgrind
+          command: 'apt-get update && apt-get install -y valgrind'
+      - run:
           name: Start Tests
           command: 'valgrind cmake-build-debug/Google_tests/Google_Tests_run'
       - run:
