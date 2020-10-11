@@ -12,7 +12,7 @@ int main() {
 
     int num = get_points(x, y, MAX_POINT);
 
-    float *res = area_figure(x, num, y, num);
+    float *res = area_figure(x, y, num);
     set_result(res);
 
     free(res);

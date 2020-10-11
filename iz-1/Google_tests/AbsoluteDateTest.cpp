@@ -4,47 +4,121 @@ extern "C" {
 #include "../include/logic.h"
 }
 
-#define MAX_POINT 10
+#define DELTA 0.0001
 
-TEST(AbsoluteDateTestSuite, ExampleDate_1){ // 12/2/2020 -> 737761
+TEST(AbsoluteDateTestSuite, ExampleDate_1){ // (0, 0),(0, 4),(3, 0) -> 6
 
-    float *x[MAX_POINT], *y[MAX_POINT];
-    for(int i = 0; i < MAX_POINT; i++){
-        x[i] = (float*) malloc(sizeof(float));
-        y[i] = (float*) malloc(sizeof(float));
+    const size_t LEN_MAS = 3;
+
+    float test_x_y[2][LEN_MAS] = {{0, 0, 3}, {0, 4, 0}};
+    const float EXPECTED = 6;
+
+    float *test_x[LEN_MAS];
+    float *test_y[LEN_MAS];
+    for (int i = 0; i < LEN_MAS; i++)
+    {
+        test_x[i] = &test_x_y[0][i];
+        test_y[i] = &test_x_y[1][i];
     }
+    float *res = area_figure(test_x, test_y, LEN_MAS);
 
-    *x[0] = 0; *x[1] = 0; *x[2] = 3;
-    *y[0] = 0; *y[1] = 4; *y[2] = 0;
-
-    float *res = area_figure(x, 3, y, 3);
-
-    ASSERT_NEAR(6, *res, 0.001);
-
-    free(res);
-
-    for(int i = 0; i < MAX_POINT; i++) {
-        free(x[i]);
-        free(y[i]);
-    }
-}
-TEST(AbsoluteDateTestSuite, ExampleDate_2){ // 12/2/2020 -> 737761
-    const size_t len_mas = 4;
-    float test_x_y[2][len_mas] = {{-2, -2, 2, 2}, {-2, 2, 2, -2}};
-    float *test_x[len_mas] = {&test_x_y[0][0], &test_x_y[0][1], &test_x_y[0][2], &test_x_y[0][3]};
-    float *test_y[len_mas] = {&test_x_y[1][0], &test_x_y[1][1], &test_x_y[1][2], &test_x_y[1][3]};
-    float *res = area_figure(test_x, len_mas, test_y, len_mas);
-
-    ASSERT_NEAR(16, *res, 0.001);
+    ASSERT_NEAR(EXPECTED, *res, DELTA);
     free(res);
 }
 
+TEST(AbsoluteDateTestSuite, ExampleDate_2){ // (-2, -2),(-2, 2),(2, 2),(2, -2) -> 16
+    const size_t LEN_MAS = 4;
 
-//TEST(AbsoluteDateTestSuite, IncorrectDate){ // 12/0/2020 -> 0
-//GregorianDate gregDate;
-//gregDate.SetMonth(12);
-//gregDate.SetDay(0);
-//gregDate.SetYear(2020);
-//
-//ASSERT_EQ(gregDate.getAbsoluteDate(),0);
-//}
+    float test_x_y[2][LEN_MAS] = {{-2, -2, 2, 2}, {-2, 2, 2, -2}};
+    const float EXPECTED = 16;
+
+    float *test_x[LEN_MAS];
+    float *test_y[LEN_MAS];
+    for (int i = 0; i < LEN_MAS; i++)
+    {
+        test_x[i] = &test_x_y[0][i];
+        test_y[i] = &test_x_y[1][i];
+    }
+    float *res = area_figure(test_x, test_y, LEN_MAS);
+
+    ASSERT_NEAR(EXPECTED, *res, DELTA);
+    free(res);
+}
+
+TEST(AbsoluteDateTestSuite, ExampleDate_3){ // (-2, -2),(-1, 1),(1, 3),(3, 3),(5, 1),(2, -1) -> 19.5
+    const size_t LEN_MAS = 6;
+
+    float test_x_y[2][LEN_MAS] = {{-2, -1, 1, 3, 5, 2}, {-2, 1, 3, 3, 1, -1}};
+    const float EXPECTED = 19.5;
+
+    float *test_x[LEN_MAS];
+    float *test_y[LEN_MAS];
+    for (int i = 0; i < LEN_MAS; i++)
+    {
+        test_x[i] = &test_x_y[0][i];
+        test_y[i] = &test_x_y[1][i];
+    }
+    float *res = area_figure(test_x, test_y, LEN_MAS);
+
+    ASSERT_NEAR(EXPECTED, *res, DELTA);
+    free(res);
+}
+
+
+TEST(AbsoluteDateTestSuite, ExampleDate_4){ // (1, 1),(3, 3),(5, 5) -> 0 // на одной прямой
+    const size_t LEN_MAS = 3;
+    float test_x_y[2][LEN_MAS] = {{1, 3, 5}, {1, 3, 5}};
+    const auto EXPECTED = 0;
+
+    float *test_x[LEN_MAS];
+    float *test_y[LEN_MAS];
+    for (int i = 0; i < LEN_MAS; i++)
+    {
+        test_x[i] = &test_x_y[0][i];
+        test_y[i] = &test_x_y[1][i];
+    }
+
+    float *res = area_figure(test_x, test_y, LEN_MAS);
+
+    ASSERT_NEAR(EXPECTED, *res, DELTA);
+    free(res);
+}
+
+
+TEST(AbsoluteDateTestSuite, IncorrectDate_1){ // (-2, -2),(-1, 1),(1, 3),(3, 3),(5, 1),(NULL, -1) -> NULL
+    const size_t LEN_MAS = 6;
+    float test_x_y[2][LEN_MAS] = {{-2, -1, 1, 3, 5, 2}, {-2, 1, 3, 3, 1, -1}};
+    const auto EXPECTED = nullptr;
+
+    float *test_x[LEN_MAS];
+    float *test_y[LEN_MAS];
+    for (int i = 0; i < LEN_MAS; i++)
+    {
+        test_x[i] = &test_x_y[0][i];
+        test_y[i] = &test_x_y[1][i];
+    }
+    test_x[LEN_MAS - 1] = nullptr;
+    test_y[LEN_MAS - 1] = &test_x_y[1][LEN_MAS - 1];
+
+    float *res = area_figure(test_x, test_y, LEN_MAS);
+
+    ASSERT_EQ(EXPECTED, res);
+}
+
+TEST(AbsoluteDateTestSuite, IncorrectDate_2){ // (-0.5, 0.43),(-1, 1) -> NULL
+    const size_t LEN_MAS = 2;
+    float test_x_y[2][LEN_MAS] = {{-0.5, -1}, {0.43, 1}};
+    const auto EXPECTED = nullptr;
+
+    float *test_x[LEN_MAS];
+    float *test_y[LEN_MAS];
+    for (int i = 0; i < LEN_MAS; i++)
+    {
+        test_x[i] = &test_x_y[0][i];
+        test_y[i] = &test_x_y[1][i];
+    }
+
+    float *res = area_figure(test_x, test_y, LEN_MAS);
+
+    ASSERT_EQ(EXPECTED, res);
+}

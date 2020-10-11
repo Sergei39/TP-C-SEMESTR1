@@ -14,7 +14,7 @@ typedef struct {
     float y;
 } Coord;
 
-float *area_figure(float **x, size_t size_x, float **y, size_t size_y);
+float *area_figure(float **const x, float **const y, const size_t size_arr);
 
 
 #endif //IZ_1_LOGIC_H

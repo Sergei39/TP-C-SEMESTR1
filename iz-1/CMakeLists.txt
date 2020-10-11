@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 include_directories(include)
 
-add_executable(iz_1 src/main.c src/logic.c src/my_math.c src/cl_console.c src/test1.cpp)
+add_executable(iz_1 src/main.c src/logic.c src/my_math.c src/cl_console.c)
 
 set(HEADER_FILES
         include/logic.h

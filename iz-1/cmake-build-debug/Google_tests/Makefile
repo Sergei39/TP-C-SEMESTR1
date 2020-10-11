@@ -218,33 +218,6 @@ AbsoluteDateTest.cpp.s:
 	cd /home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/cmake-build-debug && $(MAKE) $(MAKESILENT) -f Google_tests/CMakeFiles/Google_Tests_run.dir/build.make Google_tests/CMakeFiles/Google_Tests_run.dir/AbsoluteDateTest.cpp.s
 .PHONY : AbsoluteDateTest.cpp.s
 
-ConverterTests.o: ConverterTests.cpp.o
-
-.PHONY : ConverterTests.o
-
-# target to build an object file
-ConverterTests.cpp.o:
-	cd /home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/cmake-build-debug && $(MAKE) $(MAKESILENT) -f Google_tests/CMakeFiles/Google_Tests_run.dir/build.make Google_tests/CMakeFiles/Google_Tests_run.dir/ConverterTests.cpp.o
-.PHONY : ConverterTests.cpp.o
-
-ConverterTests.i: ConverterTests.cpp.i
-
-.PHONY : ConverterTests.i
-
-# target to preprocess a source file
-ConverterTests.cpp.i:
-	cd /home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/cmake-build-debug && $(MAKE) $(MAKESILENT) -f Google_tests/CMakeFiles/Google_Tests_run.dir/build.make Google_tests/CMakeFiles/Google_Tests_run.dir/ConverterTests.cpp.i
-.PHONY : ConverterTests.cpp.i
-
-ConverterTests.s: ConverterTests.cpp.s
-
-.PHONY : ConverterTests.s
-
-# target to generate assembly for a file
-ConverterTests.cpp.s:
-	cd /home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/cmake-build-debug && $(MAKE) $(MAKESILENT) -f Google_tests/CMakeFiles/Google_Tests_run.dir/build.make Google_tests/CMakeFiles/Google_Tests_run.dir/ConverterTests.cpp.s
-.PHONY : ConverterTests.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -261,9 +234,6 @@ help:
 	@echo "... AbsoluteDateTest.o"
 	@echo "... AbsoluteDateTest.i"
 	@echo "... AbsoluteDateTest.s"
-	@echo "... ConverterTests.o"
-	@echo "... ConverterTests.i"
-	@echo "... ConverterTests.s"
 .PHONY : help
 
 

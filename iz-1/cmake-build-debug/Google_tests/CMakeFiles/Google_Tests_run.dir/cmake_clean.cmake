@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Google_Tests_run.dir/AbsoluteDateTest.cpp.o"
-  "CMakeFiles/Google_Tests_run.dir/ConverterTests.cpp.o"
   "Google_Tests_run"
   "Google_Tests_run.pdb"
 )

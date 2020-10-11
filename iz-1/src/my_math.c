@@ -1,5 +1,5 @@
-double sqrt (double v){
-    const float delta = 1e-7;
+double my_sqrt(double v){
+    const double delta = 1e-7;
 
     double L = 0.0, R = v;
     double M = (L + R) /2.0;
@@ -15,7 +15,7 @@ double sqrt (double v){
     return R;
 }
 
-double pow(double value, int st) {
+double my_pow(double value, int st) {
     double  result = 1;
     for(int i = 0; i < st; i++)
         result *= value;

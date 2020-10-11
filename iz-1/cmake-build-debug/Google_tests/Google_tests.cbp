@@ -209,9 +209,6 @@
 		<Unit filename="/home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/Google_tests/AbsoluteDateTest.cpp">
 			<Option target="Google_Tests_run"/>
 		</Unit>
-		<Unit filename="/home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/Google_tests/ConverterTests.cpp">
-			<Option target="Google_Tests_run"/>
-		</Unit>
 		<Unit filename="/home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/Google_tests/lib/googlemock/src/gmock-all.cc">
 			<Option target="gmock"/>
 		</Unit>

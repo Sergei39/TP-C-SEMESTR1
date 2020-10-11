@@ -15,5 +15,3 @@ CMakeFiles/iz_1.dir/src/main.c.o: ../src/main.c
 
 CMakeFiles/iz_1.dir/src/my_math.c.o: ../src/my_math.c
 
-CMakeFiles/iz_1.dir/src/test1.cpp.o: ../src/test1.cpp
-
