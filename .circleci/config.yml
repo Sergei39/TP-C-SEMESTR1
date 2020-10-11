@@ -14,11 +14,17 @@ jobs:
           name: Installing Valgrind
           command: 'apt-get update && apt-get install -y valgrind'
       - run:
-          name: Start Tests
-          command: 'valgrind iz-1/cmake-build-debug/Google_tests/Google_Tests_run'
+          name: Installing CppCheck
+          command: 'apt-get update && apt-get install -y cppcheck'
       - run:
           name: Install CMAKE
           command: 'apt-get update && sudo apt-get install -y cmake'
+      - run:
+          name: Start CppCheck
+          command: 'cppcheck iz-1/*'
+      - run:
+          name: Start Tests
+          command: 'valgrind iz-1/cmake-build-debug/Google_tests/Google_Tests_run'
       - run:
           name: Creating Build Files
           command: 'cmake -H. -Bbuild'
