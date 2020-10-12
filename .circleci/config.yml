@@ -5,6 +5,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Go to Project
+          command: 'cd iz-1'
+      - run:
           name: Installing SUDO
           command: 'apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*'
       - run:
@@ -12,8 +15,7 @@ jobs:
           command: 'apt-get update && apt-get install -y gcc g++'
       - run:
           name: Installing CppCheck
-          command: 'apt-get update && apt-get install -y cppcheck | 
-                    cppcheck iz-1/src/* iz-1/include/* iz-1/Google_tests/AbsoluteDateTest'
+          command: 'apt-get update && apt-get install -y cppcheck'
       - run:
           name: Installing Valgrind
           command: 'apt-get update && apt-get install -y valgrind'
@@ -21,17 +23,14 @@ jobs:
           name: Install CMAKE
           command: 'apt-get update && sudo apt-get install -y cmake'
       - run:
-          name: Start CppCheck
-          command: 'cppcheck iz-1/src/* iz-1/include/* iz-1/Google_tests/AbsoluteDateTest'
-      - run:
-          name: Start Tests With Valgrind
-          command: 'valgrind iz-1/cmake-build-debug/Google_tests/Google_Tests_run'
-      - run:
           name: Creating Build Files
           command: 'cmake -H. -Bbuild'
       - run:
           name: Creating Binary Files
-          command: 'cmake --build build'
+          command: 'cmake --build build --target Google_Tests_run -- -j 6'
       - run:
-          name: Point Unit Testing
-          command: './bin/point_test'
+          name: Start CppCheck
+          command: 'cppcheck src/* include/* Google_tests/AbsoluteDateTest'
+      - run:
+          name: Start Tests With Valgrind
+          command: 'valgrind build/Google_tests/Google_Tests_run'
