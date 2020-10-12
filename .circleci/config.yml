@@ -5,9 +5,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Go to Project
-          command: 'cd iz-1 && ls'
-      - run:
           name: Installing SUDO
           command: 'apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*'
       - run:
@@ -23,17 +20,5 @@ jobs:
           name: Install CMAKE
           command: 'apt-get update && sudo apt-get install -y cmake'
       - run:
-          name: Look directories
-          command: 'ls -al'
-      - run:
           name: Creating Build Files
-          command: 'cmake -H. -Bbuild iz-1'
-      - run:
-          name: Creating Binary Files
-          command: 'cmake --build build --target Google_Tests_run -- -j 6'
-      - run:
-          name: Start CppCheck
-          command: 'cppcheck src/* include/* Google_tests/AbsoluteDateTest'
-      - run:
-          name: Start Tests With Valgrind
-          command: 'valgrind build/Google_tests/Google_Tests_run'
+          command: 'mkdir iz-1/build && cd iz-1/build && cmake -H. -Bbuild .. && ls -la'
