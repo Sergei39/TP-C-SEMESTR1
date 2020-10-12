@@ -1,0 +1,63 @@
+        -:    0:Source:/home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/src/logic.c
+        -:    0:Graph:/home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/cmake-build-debug-coverage/CMakeFiles/iz-1.dir/src/logic.c.gcno
+        -:    0:Data:/home/sergei/Projects/Projectc++/TP-C-SEMESTR1/iz-1/cmake-build-debug-coverage/CMakeFiles/iz-1.dir/src/logic.c.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "logic.h"
+        -:    2:
+        -:    3:
+       33:    4:float length(const Coord o1, const Coord o2) {
+       33:    4-block  0
+       33:    5:    return (float)my_sqrt(my_pow((o1.x - o2.x), 2) + my_pow((o1.y - o2.y), 2));
+       33:    5-block  0
+        -:    6:}
+        -:    7:
+       11:    8:float area_triangle(const Coord o1, const Coord o2, const Coord o3) {
+       11:    8-block  0
+       11:    9:    float a = length(o1, o2);
+       11:    9-block  0
+       11:   10:    float b = length(o2, o3);
+       11:   11:    float c = length(o1, o3);
+       11:   12:    float p = (a + b + c) / 2;
+       11:   13:    float sum = my_sqrt(p * (p - a) * (p - b) * (p - c));
+       11:   14:    return sum;
+        -:   15:}
+        -:   16:
+        6:   17:float *area_figure(float **const x, float **const y, const size_t size_arr) {
+        6:   17-block  0
+        -:   18:
+        6:   19:    if (size_arr < 3)
+        6:   19-block  0
+        1:   20:        return NULL;
+        1:   20-block  0
+        -:   21:
+        5:   22:    float *area = (float*) malloc(sizeof(float));
+        5:   23:    *area = 0;
+        -:   24:
+        5:   25:    const Coord start = {*(x[0]), *(y[0])};
+        5:   26:    Coord first = {*(x[1]), *(y[1])};
+        -:   27:
+       16:   28:    for (int i = 2; i < size_arr; i++) {
+        5:   28-block  0
+       16:   28-block  1
+       12:   29:        if (x[i] == NULL || y[i] == NULL) {
+       12:   29-block  0
+       11:   29-block  1
+        1:   30:            free(area);
+        1:   31:            return NULL;
+        1:   31-block  0
+        -:   32:        }
+        -:   33:
+       11:   34:        Coord second = first;
+        -:   35:
+       11:   36:        first.x = *(x[i]);
+       11:   37:        first.y = *(y[i]);
+        -:   38:
+       11:   39:        (*area) += area_triangle(start, first, second);
+       11:   39-block  0
+        -:   40:    }
+        -:   41:
+        6:   42:    return area;
+        4:   42-block  0
+        6:   42-block  1
+        -:   43:}

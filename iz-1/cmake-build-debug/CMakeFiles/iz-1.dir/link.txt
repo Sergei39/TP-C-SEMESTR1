@@ -1,0 +1,2 @@
+/usr/bin/ar qc libiz-1.a  CMakeFiles/iz-1.dir/src/logic.c.o CMakeFiles/iz-1.dir/src/my_math.c.o
+/usr/bin/ranlib libiz-1.a
