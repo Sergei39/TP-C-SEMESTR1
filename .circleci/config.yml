@@ -20,8 +20,12 @@ jobs:
           name: Install CMAKE
           command: 'apt-get update && sudo apt-get install -y cmake'
       - run:
+          name: Installing Gcovr
+          command: 'apt-get update && apt-get install -y gcovr'
+      - run:
           name: Creating Build Files
-          command: 'mkdir iz-1/build && cd iz-1/build && cmake -H. -Bbuild .. && ls -la'
+          command: 'mkdir iz-1/build && cd iz-1/build && 
+                    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la'
       - run:
           name: Creating Binary Files
           command: 'cmake --build iz-1/build --target Google_Tests_run -- -j 6 && ls -la'
@@ -31,3 +35,6 @@ jobs:
       - run:
           name: Start Tests With Valgrind
           command: 'valgrind iz-1/build/Google_tests/Google_Tests_run'
+      - run:
+          name: Gcovr
+          command: 'cd iz-1 && gcovr -r .'
