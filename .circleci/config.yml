@@ -23,8 +23,11 @@ jobs:
           name: Install CMAKE
           command: 'apt-get update && sudo apt-get install -y cmake'
       - run:
+          name: Look directories
+          command: 'ls -al'
+      - run:
           name: Creating Build Files
-          command: 'cmake -H. -Bbuild'
+          command: 'cmake -H. -Bbuild iz-1'
       - run:
           name: Creating Binary Files
           command: 'cmake --build build --target Google_Tests_run -- -j 6'
