@@ -22,3 +22,12 @@ jobs:
       - run:
           name: Creating Build Files
           command: 'mkdir iz-1/build && cd iz-1/build && cmake -H. -Bbuild .. && ls -la'
+      - run:
+          name: Creating Binary Files
+          command: 'cmake --build iz-1/build --target Google_Tests_run -- -j 6 && ls -la'
+      - run:
+          name: Start CppCheck
+          command: 'ls -la && cd iz-1 && ls -la && cppcheck src/* include/* Google_tests/AbsoluteDateTest'
+      - run:
+          name: Start Tests With Valgrind
+          command: 'valgrind iz-1/build/Google_tests/Google_Tests_run'
