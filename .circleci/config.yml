@@ -37,4 +37,4 @@ jobs:
           command: 'valgrind iz-1/build/Google_tests/Google_Tests_run'
       - run:
           name: Gcovr
-          command: 'cd iz-1 && gcovr --exclude-directories "src$"'
+          command: 'cd iz-1 && gcovr --exclude-directories "src$" .'
