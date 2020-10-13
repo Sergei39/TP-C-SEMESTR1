@@ -16,6 +16,14 @@ float area_triangle(const Coord o1, const Coord o2, const Coord o3) {
 
 float *area_figure(float **const x, float **const y, const size_t size_arr) {
 
+    if (x == NULL || y == NULL)
+        return NULL;
+
+    for (int i = 0; i < size_arr; i++) {
+        if (x[i] == 0 || y[i] == NULL)
+            return NULL;
+    }
+
     if (size_arr < 3)
         return NULL;
 
