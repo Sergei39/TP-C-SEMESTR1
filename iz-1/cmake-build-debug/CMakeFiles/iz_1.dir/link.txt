@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/iz_1.dir/src/main.c.o CMakeFiles/iz_1.dir/src/logic.c.o CMakeFiles/iz_1.dir/src/my_math.c.o CMakeFiles/iz_1.dir/src/cl_console.c.o  -o iz_1 
