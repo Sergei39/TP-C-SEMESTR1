@@ -34,11 +34,6 @@ float *area_figure(float **const x, float **const y, const size_t size_arr) {
     Coord first = {*(x[1]), *(y[1])};
 
     for (int i = 2; i < size_arr; i++) {
-        if (x[i] == NULL || y[i] == NULL) {
-            free(area);
-            return NULL;
-        }
-
         Coord second = first;
 
         first.x = *(x[i]);

@@ -1,6 +1,5 @@
 #include "logic.h"
 #include "cl_console.h"
-#include <stdio.h>
 
 #define MAX_POINT 100
 
@@ -16,9 +15,9 @@ int main() {
                 free(x[j]);
                 free(y[j]);
             }
-            if (x[i] == NULL)
+            if (x[i] != NULL)
                 free(x[i]);
-            if (y[i] == NULL)
+            if (y[i] != NULL)
                 free(y[i]);
 
             return 0;
