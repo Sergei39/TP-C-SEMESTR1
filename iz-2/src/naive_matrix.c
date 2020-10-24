@@ -29,32 +29,71 @@ int** matrix_read(FILE* stream, int* row, int* col) {
     return arr;
 }
 
-int** matrix_read_file(const char* file_name, int* row, int* col) {
-    FILE *file = fopen(file_name, "r");
-
-    if (!file) {
-        fprintf(stderr, "Failed to open file for write\n");
-        return NULL;
-    }
-
-    int** arr = matrix_read(file, row, col);
-
-    if (fclose(file)) {
-        fprintf( stderr, "Failed to close file\n" );
-        return NULL;
-    }
-
-    return arr;
-}
-
-void matrix_reflection_and_write(FILE* stream, int** arr, const int* row, const int* col) {
+void matrix_write(FILE* stream, int** arr, const int* row, const int* col) {
     if(stream == NULL)
         stream = stdout;
 
-    for( int i = *col - 1; i >= 0; --i ) {
-        for ( int j = *row - 1; j >= 0; --j )
-            fprintf(stream, "%d ", arr[j][i]);
+    fprintf(stream, "%d %d\n", *row, *col);
+
+    for( int i = 0; i < *row; ++i ) {
+        for ( int j = 0; j < *col; ++j )
+            fprintf(stream, "%d ", arr[i][j]);
         fprintf(stream, "\n");
     }
 }
 
+int matrix_reflection(int** arr, const int *row, const int *col, int**arr_tr) {
+    for( int i = *col - 1, new_row_i = 0; i >= 0; --i, ++new_row_i ) {
+        for ( int j = *row - 1, new_col_j = 0; j >= 0; --j, ++new_col_j )
+            arr_tr[new_row_i][new_col_j] = arr[j][i];
+    }
+}
+
+int matrix_reflection_file(const char * file_name_input, const char * file_name_output) {
+    FILE *file_input = fopen(file_name_input, "r");
+    if (!file_input) {
+        fprintf(stderr, "Failed to open file for read\n");
+        return 1;
+    }
+
+    FILE *file_output = fopen(file_name_output, "w");
+    if (!file_output) {
+        fprintf(stderr, "Failed to open file for write\n");
+
+        if (fclose(file_input))
+            fprintf( stderr, "Failed to close file\n" );
+
+        return 1;
+    }
+
+    int res = matrix_reflection_stream(file_input, file_output);
+
+    if (fclose(file_input) || fclose(file_output)) {
+        fprintf( stderr, "Failed to close file\n" );
+        return 1;
+    }
+
+    return res;
+}
+
+int matrix_reflection_stream(FILE* input, FILE* output) {
+    int row = 0, col = 0;
+    int** arr = matrix_read(input, &row, &col);
+    if (arr == NULL)
+        return 1;
+
+    int** arr_tr = get_mem(&col, &row);
+    if (arr_tr == NULL) {
+        clear_mem(arr, &row);
+        return 1;
+    }
+
+    matrix_reflection(arr, &row, &col, arr_tr);
+    clear_mem(arr, &row);
+
+    matrix_write(output, arr_tr, &col, &row);
+
+    clear_mem(arr_tr, &col);
+
+    return 0;
+}

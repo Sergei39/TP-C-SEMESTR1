@@ -1,4 +1,4 @@
-#include "matrix_member.h"
+#include "matrix_memory.h"
 
 void clear_mem( int** arr, const int *row ) {
     int i = 0;
