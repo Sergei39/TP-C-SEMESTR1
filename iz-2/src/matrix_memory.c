@@ -13,7 +13,7 @@ void clear_mem( int** arr, const int *row ) {
 int** get_mem( const int *row, const int *col ) {
     int** arr = ( int** )malloc( *row * sizeof( int* ) );
     if( arr == NULL ) {
-        fprintf( stderr, "Failed not memory arr**\n" );
+        fprintf( stderr, "Failed not memory_interface arr**\n" );
         return NULL;
     }
 
@@ -21,7 +21,7 @@ int** get_mem( const int *row, const int *col ) {
         arr[i] = ( int* )malloc( *col * sizeof( int ) );
         if( arr[i] == NULL ) {
             clear_mem(arr, row);
-            fprintf( stderr, "Failed not memory\n" );
+            fprintf( stderr, "Failed not memory_interface\n" );
             return NULL;
         }
     }

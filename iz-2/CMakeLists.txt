@@ -3,11 +3,10 @@ project(iz-2)
 
 set(PROJECT_NAME iz-2)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wshadow -FPIC")
 
 set(ALL_SOURCE_FILES
         main.c
-        src/complex_matrix.c
-        include/complex_matrix.h
         )
 
 set(UNIT_TESTS
@@ -15,21 +14,39 @@ set(UNIT_TESTS
         unit_tests/test_main.cpp
         )
 
+
+#-------------------------static-lib-----------------------
+set(MEMORY_LIB memory_lib)
+
+set(SOURCE_FILES_MEMORY_LIB
+        src/matrix_memory.c
+        )
+
+set(HEADER_FILES_MEMORY_LIB
+        include/memory_interface/matrix_memory.h
+        )
+
+add_library(${MEMORY_LIB} SHARED ${SOURCE_FILES_MEMORY_LIB})
+target_include_directories(${MEMORY_LIB} PUBLIC include/memory_interface)
+
+#------------------------end-static-lib---------------------
+
+
 #-------------------------static-lib-----------------------
 set(STATIC_LIB base_matrix_lib)
 
 set(SOURCE_FILES_STATIC_LIB
         src/naive_matrix.c
-        src/matrix_memory.c
+        src/interaction_user.c
         )
 
 set(HEADER_FILES_STATIC_LIB
-        include/naive_matrix.h
-        include/matrix_memory.h
+        include/matrix_interface/reflection_matrix.h
         )
 
 add_library(${STATIC_LIB} STATIC ${SOURCE_FILES_STATIC_LIB})
-target_include_directories(${STATIC_LIB} PUBLIC include)
+target_link_libraries(${STATIC_LIB} ${MEMORY_LIB})
+target_include_directories(${STATIC_LIB} PUBLIC include/matrix_interface)
 
 #------------------------end-static-lib---------------------
 
@@ -39,16 +56,17 @@ set(DYNAMIC_LIB complex_matrix_lib)
 
 set(SOURCE_FILES_DYNAMIC_LIB
         src/complex_matrix.c
-        src/matrix_memory.c
+        src/interaction_user.c
         )
 
 set(HEADER_FILES_DYNAMIC_LIB
-        include/complex_matrix.h
-        include/matrix_memory.h
+        include/matrix_interface/reflection_matrix.h
         )
 
-add_library(${DYNAMIC_LIB} STATIC ${SOURCE_FILES_DYNAMIC_LIB})
-target_include_directories(${DYNAMIC_LIB} PUBLIC include)
+set ( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
+add_library(${DYNAMIC_LIB} SHARED ${SOURCE_FILES_DYNAMIC_LIB})
+target_link_libraries(${DYNAMIC_LIB} ${MEMORY_LIB})
+target_include_directories(${DYNAMIC_LIB} PUBLIC include/matrix_interface)
 
 #------------------------end-static-lib---------------------
 
@@ -94,10 +112,10 @@ endif()
 #----------------------------include-test-----------------------------
 
 add_executable(test_naive ${UNIT_TESTS})
-target_link_libraries(unit-test gtest gtest_main rt pthread ${STATIC_LIB})
+target_link_libraries(test_naive gtest gtest_main rt pthread ${STATIC_LIB})
 
 add_executable(test_complex ${UNIT_TESTS})
-target_link_libraries(unit-test gtest gtest_main rt pthread ${DYNAMIC_LIB})
+target_link_libraries(test_complex gtest gtest_main rt pthread ${DYNAMIC_LIB})
 
 #-----------------------------end-google-tests-----------------------------
 
