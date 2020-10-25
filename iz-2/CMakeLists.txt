@@ -14,8 +14,13 @@ set(UNIT_TESTS
         unit_tests/test_main.cpp
         )
 
+set(STRESS_TESTS
+        unit_tests/stress_test.cpp
+        unit_tests/test_main.cpp
+        )
 
-#-------------------------static-lib-----------------------
+
+#-------------------------memory-lib-----------------------
 set(MEMORY_LIB memory_lib)
 
 set(SOURCE_FILES_MEMORY_LIB
@@ -27,9 +32,10 @@ set(HEADER_FILES_MEMORY_LIB
         )
 
 add_library(${MEMORY_LIB} SHARED ${SOURCE_FILES_MEMORY_LIB})
+target_link_libraries(${MEMORY_LIB} -FPIC)
 target_include_directories(${MEMORY_LIB} PUBLIC include/memory_interface)
 
-#------------------------end-static-lib---------------------
+#------------------------end-memory-lib---------------------
 
 
 #-------------------------static-lib-----------------------
@@ -65,7 +71,7 @@ set(HEADER_FILES_DYNAMIC_LIB
 
 set ( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
 add_library(${DYNAMIC_LIB} SHARED ${SOURCE_FILES_DYNAMIC_LIB})
-target_link_libraries(${DYNAMIC_LIB} ${MEMORY_LIB})
+target_link_libraries(${DYNAMIC_LIB} -FPIC ${MEMORY_LIB})
 target_include_directories(${DYNAMIC_LIB} PUBLIC include/matrix_interface)
 
 #------------------------end-static-lib---------------------
@@ -117,9 +123,13 @@ target_link_libraries(test_naive gtest gtest_main rt pthread ${STATIC_LIB})
 add_executable(test_complex ${UNIT_TESTS})
 target_link_libraries(test_complex gtest gtest_main rt pthread ${DYNAMIC_LIB})
 
+add_executable(stress_test ${STRESS_TESTS})
+target_link_libraries(stress_test gtest gtest_main rt pthread)
+
 #-----------------------------end-google-tests-----------------------------
 
+add_executable(${PROJECT_NAME}-consistent ${ALL_SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME}-consistent ${STATIC_LIB})
 
-
-add_executable(${PROJECT_NAME} ${ALL_SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} ${STATIC_LIB})
+add_executable(${PROJECT_NAME}-parallel ${ALL_SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME}-parallel -pthread ${DYNAMIC_LIB})
