@@ -13,6 +13,7 @@ jobs:
   build:
     docker: 
       - image: "debian:stretch"
+    working_directory: ~/iz-2
     steps:
       - run: cd .. && ls -la && mkdir iz-1/build && cd iz-1/build && 
                     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
