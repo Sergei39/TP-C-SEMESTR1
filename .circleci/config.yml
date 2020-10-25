@@ -14,7 +14,7 @@ jobs:
     docker: 
       - image: "debian:stretch"
     steps:
-      - run: mkdir iz-1/build && cd iz-1/build && 
+      - run: ls -la && mkdir iz-1/build && cd iz-1/build && 
                     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
       - run: cmake --build iz-1/build --target Google_Tests_run -- -j 6 && ls -la
   test:
@@ -32,6 +32,7 @@ jobs:
           command: 'cd iz-1 && gcovr -r .'
 
 workflows:
+  version: 2
   build_and_test:
     jobs:
       - install
