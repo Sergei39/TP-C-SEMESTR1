@@ -38,7 +38,7 @@ jobs:
       - run: apt-get update && apt-get install -y gcovr
 
       - run: ls -la && mkdir iz-2/build && cd iz-2/build && 
-                    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
+                    cmake && ls -la
       - run: cmake --build iz-2/build --target test_naive -- -j 6
       - run: cmake --build iz-2/build --target test_complex -- -j 6
       - run: cmake --build iz-2/build --target iz-2-consistent -- -j 6
