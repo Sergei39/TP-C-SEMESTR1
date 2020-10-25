@@ -14,7 +14,7 @@ jobs:
     docker: 
       - image: "debian:stretch"
     steps:
-      - run: ls -la && mkdir iz-1/build && cd iz-1/build && 
+      - run: cd .. && ls -la && mkdir iz-1/build && cd iz-1/build && 
                     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
       - run: cmake --build iz-1/build --target Google_Tests_run -- -j 6 && ls -la
   test:
