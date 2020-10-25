@@ -59,7 +59,7 @@ jobs:
           command: 'iz-2/build/stress_test --gtest_filter=* --gtest_color=no'
       - run:
           name: Gcovr
-          command: 'cd iz-1 && gcovr -r .'
+          command: 'cd iz-2 && gcovr -r .'
 
 workflows:
   version: 2
