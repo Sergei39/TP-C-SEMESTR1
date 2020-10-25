@@ -3,7 +3,6 @@ jobs:
     docker:
       - image: "debian:stretch"
     steps:
-      - checkout
       - run: apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
       - run: apt-get update && apt-get install -y gcc g++
       - run: apt-get update && apt-get install -y cppcheck
