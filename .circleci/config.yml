@@ -1,6 +1,10 @@
+orbs:
+  node: circleci/node@3.0.0
+
 jobs:
   install:
     executor: node/default
+    working_directory: ~/
     steps:
       - checkout
       - run: apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
