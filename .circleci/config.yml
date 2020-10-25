@@ -30,3 +30,14 @@ jobs:
       - run:
           name: Gcovr
           command: 'cd iz-1 && gcovr -r .'
+
+workflows:
+  build_and_test:
+    jobs:
+      - install
+      - build:
+          requires:
+            - install
+      - test:
+          requires:
+            - build
