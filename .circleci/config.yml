@@ -25,8 +25,45 @@ jobs:
           name: Gcovr
           command: 'cd iz-1 && gcovr -r .'
 
+  build_and_test_iz-2:
+    docker:
+      - image: "debian:stretch"
+    steps:
+      - checkout
+      - run: apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
+      - run: apt-get update && apt-get install -y gcc g++
+      - run: apt-get update && apt-get install -y cppcheck
+      - run: apt-get update && apt-get install -y valgrind
+      - run: apt-get update && sudo apt-get install -y cmake
+      - run: apt-get update && apt-get install -y gcovr
+
+      - run: ls -la && mkdir iz-2/build && cd iz-2/build && 
+                    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
+      - run: cmake --build iz-2/build --target test_naive -- -j 6
+      - run: cmake --build iz-2/build --target test_complex -- -j 6
+      - run: cmake --build iz-2/build --target iz-2-consistent -- -j 6
+      - run: cmake --build iz-2/build --target iz-2-parallel -- -j 6
+      - run: cmake --build iz-2/build --target stress_test -- -j 6
+
+      - run:
+          name: Start CppCheck
+          command: 'cd iz-2 && cppcheck src/* include/*'
+      - run:
+          name: Start Tests Static Library With Valgrind
+          command: 'valgrind iz-2/build/test_naive --gtest_filter=* --gtest_color=no'
+      - run:
+          name: Start Tests Dynamic Library With Valgrind
+          command: 'valgrind iz-2/build/test_complex --gtest_filter=* --gtest_color=no'
+      - run:
+          name: Start Stress Test
+          command: 'iz-2/build/stress_test --gtest_filter=* --gtest_color=no'
+      - run:
+          name: Gcovr
+          command: 'cd iz-1 && gcovr -r .'
+
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build_and_test_iz-1
+      - build_and_test_iz-2
