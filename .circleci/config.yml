@@ -10,7 +10,7 @@ jobs:
       - run: apt-get update && apt-get install -y valgrind
       - run: apt-get update && sudo apt-get install -y cmake
       - run: apt-get update && apt-get install -y gcovr
-    - persist_to_workspace:
+      - persist_to_workspace:
                   root: .
                   paths:
                       - .
