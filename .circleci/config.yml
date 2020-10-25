@@ -1,15 +1,15 @@
 jobs:
-#   install:
-#     docker:
-#       - image: "debian:stretch"
-#     steps:
-#       - checkout
-#       - run: apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
-#       - run: apt-get update && apt-get install -y gcc g++
-#       - run: apt-get update && apt-get install -y cppcheck
-#       - run: apt-get update && apt-get install -y valgrind
-#       - run: apt-get update && sudo apt-get install -y cmake
-#       - run: apt-get update && apt-get install -y gcovr
+  install:
+    docker:
+      - image: "debian:stretch"
+    steps:
+      - checkout
+      - run: apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
+      - run: apt-get update && apt-get install -y gcc g++
+      - run: apt-get update && apt-get install -y cppcheck
+      - run: apt-get update && apt-get install -y valgrind
+      - run: apt-get update && sudo apt-get install -y cmake
+      - run: apt-get update && apt-get install -y gcovr
   build:
     docker: 
       - image: "debian:stretch"
@@ -22,6 +22,7 @@ jobs:
     docker: 
       - image: "debian:stretch"
     steps:
+      - checkout
       - run:
           name: Start CppCheck
           command: 'ls -la && cd iz-1 && ls -la && cppcheck src/* include/* Google_tests/AbsoluteDateTest'
@@ -36,10 +37,10 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-    #   - install
-      - build
-        #   requires:
-        #     - install
+      - install
+      - build:
+          requires:
+            - install
       - test:
           requires:
             - build
