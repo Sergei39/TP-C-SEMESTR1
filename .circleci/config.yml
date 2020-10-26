@@ -51,13 +51,13 @@ jobs:
           command: 'cd iz-2 && cppcheck src/* include/*'
       - run:
           name: Start Tests Static Library With Valgrind
-          command: 'valgrind iz-2/build/test_naive --gtest_filter=* --gtest_color=no'
+          command: 'cd iz-2/build && valgrind ./test_naive --gtest_filter=* --gtest_color=no'
       - run:
           name: Start Tests Dynamic Library With Valgrind
-          command: 'valgrind iz-2/build/test_complex --gtest_filter=* --gtest_color=no'
+          command: 'cd iz-2/build && valgrind ./test_complex --gtest_filter=* --gtest_color=no'
       - run:
           name: Start Stress Test
-          command: 'iz-2/build/stress_test --gtest_filter=* --gtest_color=no'
+          command: 'cd iz-2/build && ./stress_test --gtest_filter=* --gtest_color=no'
       - run:
           name: Gcovr
           command: 'cd iz-2 && gcovr -r .'
