@@ -43,19 +43,6 @@ TEST(IncorrectTestLib, IncorrectNameFile){
     ASSERT_EQ(EXPECTED, res);
 }
 
-TEST(IncorrectTestLib, NotMemory){
-    const char* NAME_INPUT_1 = "../unit_tests/incorrect_files/not_memory_1.input";
-    //const char* NAME_INPUT_2 = "../unit_tests/incorrect_files/not_memory_2.input";
-    const char* NAME_OUTPUT = "../unit_tests/test_files/output.output";
-    const int EXPECTED = 1;
-
-    int res1 = matrix_reflection_file(NAME_INPUT_1, NAME_OUTPUT);
-    //int res2 = matrix_reflection_file(NAME_INPUT_2, NAME_OUTPUT);
-
-    ASSERT_EQ(EXPECTED, res1);
-    //ASSERT_EQ(EXPECTED, res2);
-}
-
 TEST(IncorrectTestLib, BrokenMatrix){
     const char* NAME_INPUT = "../unit_tests/incorrect_files/broken_matrix.input";
     const char* NAME_EXPECTED_OUTPUT = "../unit_tests/incorrect_files/broken_matrix.output";
