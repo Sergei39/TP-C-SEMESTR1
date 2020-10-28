@@ -2,7 +2,7 @@
 #include "reflection_matrix.h"
 #include <string.h>
 #include <pthread.h>
-#include <zconf.h>
+#include <unistd.h>
 
 // структура для передачи информации в поток
 typedef struct {
@@ -16,7 +16,6 @@ typedef struct {
 
 
 void* part_matrix_reflection (void* _data) {
-    printf("Hello\n");
     Data_thread* data = (Data_thread*) _data;
 
     // математические вычисления для определения области памяти в которой
