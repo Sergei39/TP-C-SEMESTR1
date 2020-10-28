@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include <string>
 #include <fstream>
+#include <dlfcn.h>
 
 extern "C" {
 #include "reflection_matrix.h"

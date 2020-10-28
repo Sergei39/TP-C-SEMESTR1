@@ -2,6 +2,7 @@
 #include "reflection_matrix.h"
 #include <string.h>
 #include <pthread.h>
+#include <zconf.h>
 
 // структура для передачи информации в поток
 typedef struct {
@@ -14,30 +15,8 @@ typedef struct {
 } Data_thread;
 
 
-// читаем файл с информацией о ядрах Linux
-int get_number_cores() {
-    char str[256];
-    int procCount = 0;
-    FILE *fp;
-
-    if( (fp = fopen("/proc/cpuinfo", "r")) )
-    {
-        while(fgets(str, sizeof str, fp)) {
-            if (!memcmp(str, "processor", 9)) procCount++;
-        }
-        fclose(fp);
-    }
-
-    if ( !procCount )
-    {
-        procCount=2;
-    }
-
-    return procCount;
-}
-
-
 void* part_matrix_reflection (void* _data) {
+    printf("Hello\n");
     Data_thread* data = (Data_thread*) _data;
 
     // математические вычисления для определения области памяти в которой
@@ -57,7 +36,9 @@ void* part_matrix_reflection (void* _data) {
 }
 
 int matrix_reflection(int** arr, const int* row, const int* col, int** arr_tr) {
-    int max_thread = get_number_cores() - 1;
+    // читаем информацию о количестве ядер в процессоре
+    int max_thread = (int) sysconf(_SC_NPROCESSORS_ONLN) - 1;
+
     int col_on_thread = *col / max_thread;
     int col_on_main_thread = *col % max_thread;
 
@@ -79,7 +60,11 @@ int matrix_reflection(int** arr, const int* row, const int* col, int** arr_tr) {
         data->col_on_thread = col_on_thread;
         data->number_thread = i;
 
-        pthread_create(&thread_ids[i], NULL, part_matrix_reflection, (void*) data);
+        int err = pthread_create(&thread_ids[i], NULL, part_matrix_reflection, (void*) data);
+
+        if (err != 0) {
+            return 1;
+        }
     }
 
 

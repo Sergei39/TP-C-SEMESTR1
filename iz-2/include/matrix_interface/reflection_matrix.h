@@ -2,8 +2,6 @@
 #ifndef IZ_2_REFLECTION_MATRIX_H
 #define IZ_2_REFLECTION_MATRIX_H
 
-#include <stdio.h>
-#include <malloc.h>
 #include "matrix_memory.h"
 
 int matrix_reflection(int** arr, const int* row, const int* col, int** arr_tr);

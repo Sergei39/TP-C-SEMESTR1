@@ -124,12 +124,9 @@ add_executable(test_complex ${UNIT_TESTS})
 target_link_libraries(test_complex gtest gtest_main rt pthread ${DYNAMIC_LIB})
 
 add_executable(stress_test ${STRESS_TESTS})
-target_link_libraries(stress_test gtest gtest_main rt pthread)
+target_link_libraries(stress_test gtest gtest_main rt pthread -ldl ${STATIC_LIB})
 
 #-----------------------------end-google-tests-----------------------------
 
-add_executable(${PROJECT_NAME}-consistent ${ALL_SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME}-consistent ${STATIC_LIB})
-
-add_executable(${PROJECT_NAME}-parallel ${ALL_SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME}-parallel -pthread ${DYNAMIC_LIB})
+add_executable(${PROJECT_NAME} ${ALL_SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME} ${STATIC_LIB})

@@ -3,19 +3,26 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
+#include <dlfcn.h>
+#include <chrono>
 
+extern "C" {
+#include "reflection_matrix.h"
+}
+
+using namespace std::chrono;
 
 TEST(StressTest, BigMatrix){
-    char* NAME_INPUT = "../unit_tests/stress_test_files/test.input";
-    char* NAME_CONSISTENT_OUTPUT = "../unit_tests/stress_test_files/test_consistent.output";
-    char* NAME_PARALLEL_OUTPUT = "../unit_tests/stress_test_files/test_parallel.output";
+    const char* NAME_INPUT = "../unit_tests/stress_test_files/test.input";
+    const char* NAME_CONSISTENT_OUTPUT = "../unit_tests/stress_test_files/test_consistent.output";
+    const char* NAME_PARALLEL_OUTPUT = "../unit_tests/stress_test_files/test_parallel.output";
 
 
     const int ROW = 10000;
     const int COL = 5000;
     FILE *file = fopen(NAME_INPUT, "w");
     if(!file) {
-        std::cerr << "TEST Failed to open file";
+        fprintf(stderr, "library opening failed");
         ASSERT_TRUE(false);
     }
 
@@ -33,24 +40,38 @@ TEST(StressTest, BigMatrix){
 
     fclose(file);
 
-    /*Spawn a child to run the program.*/
-    pid_t pid1=fork();
-    if (pid1==0) { /* child process */
-        static char *argv[]={NAME_INPUT, NAME_CONSISTENT_OUTPUT, nullptr};
-        execv("iz-2-consistent",argv);
-        exit(127); /* only if execv fails */
-    }
-    pid_t pid2=fork();
-    if (pid2==0) {  /* child process */
-        static char *argv[] = {NAME_INPUT, NAME_PARALLEL_OUTPUT, nullptr};
-        execv("iz-2-parallel", argv);
-        exit(127); /* only if execv fails */
+    // запускаем функцию из статической библиотеки и мерим время
+    system_clock::time_point start = system_clock::now();
+    matrix_reflection_file(NAME_INPUT, NAME_CONSISTENT_OUTPUT);
+    system_clock::time_point end = system_clock::now();
+    duration<double> consistent = end - start;
+    std::cout << "consistent: " << consistent.count() << std::endl;
+
+
+    void *library;
+    int (*dynamic_func)(const char* file_name_input, const char* file_name_output);
+
+    library = dlopen("./libcomplex_matrix_lib.so", RTLD_LAZY); // подключение библиотеки
+    if (!library) {
+        fprintf(stderr, "library opening failed");
+        ASSERT_TRUE(false);
     }
 
-    waitpid(pid1,nullptr,0); /* wait for child to exit */
-    waitpid(pid2,nullptr,0); /* wait for child to exit */
-    
+    void* func = dlsym(library, "matrix_reflection_file");
+    dynamic_func = (int (*)(const char *, const char *)) func;
 
+
+    // зпускаем функцию из динамической библиотеки и мерим время
+    start = system_clock::now();
+    (*dynamic_func)(NAME_INPUT, NAME_PARALLEL_OUTPUT);
+    end = system_clock::now();
+    duration<double> parallel = end - start;
+    std::cout << "parallel: " << parallel.count() << std::endl;
+
+    dlclose(library);
+
+
+    // сравниваем результаты
     std::string line_consistent, line_parallel;
 
     std::ifstream in_consistent(NAME_CONSISTENT_OUTPUT);

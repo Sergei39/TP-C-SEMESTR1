@@ -1,3 +1,4 @@
+#include <string.h>
 #include "reflection_matrix.h"
 
 int** matrix_read(FILE* stream, int* row, int* col) {
@@ -12,8 +13,7 @@ int** matrix_read(FILE* stream, int* row, int* col) {
     }
 
     for (int i = 0; i < *row; i++)
-        for (int j = 0; j < *col; j++)
-            arr[i][j] = 0;
+        memset (arr[i], 0, *col * sizeof(int));
 
     for (int i = 0; i < *row; i++) {
         for (int j = 0; j < *col; j++) {

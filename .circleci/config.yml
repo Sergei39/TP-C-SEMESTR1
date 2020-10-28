@@ -5,11 +5,11 @@ jobs:
     steps:
       - checkout
       - run: apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
-      - run: apt-get update && apt-get install -y gcc g++
-      - run: apt-get update && apt-get install -y cppcheck
-      - run: apt-get update && apt-get install -y valgrind
-      - run: apt-get update && sudo apt-get install -y cmake
-      - run: apt-get update && apt-get install -y gcovr
+      - run: apt-get install -y gcc g++
+      - run: apt-get install -y cppcheck
+      - run: apt-get install -y valgrind
+      - run: apt-get install -y cmake
+      - run: apt-get install -y gcovr
 
       - run: ls -la && mkdir iz-1/build && cd iz-1/build && 
                     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
@@ -31,12 +31,12 @@ jobs:
     steps:
       - checkout
       - run: apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
-      - run: apt-get update && apt-get install -y gcc g++
-      - run: apt-get update && apt-get install -y cppcheck
-      - run: apt-get update && apt-get install -y valgrind
-      - run: apt-get update && sudo apt-get install -y cmake
-      - run: apt-get update && apt-get install -y gcovr
-      - run: apt-get update && apt-get install -y git 
+      - run: apt-get install -y gcc g++
+      - run: apt-get install -y cppcheck
+      - run: apt-get install -y valgrind
+      - run: apt-get install -y cmake
+      - run: apt-get install -y gcovr
+      - run: apt-get install -y git 
 
       - run: ls -la && mkdir iz-2/build && cd iz-2/build && 
                     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
