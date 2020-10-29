@@ -36,7 +36,7 @@ void* part_matrix_reflection (void* _data) {
 
 int matrix_reflection(int** arr, const int* row, const int* col, int** arr_tr) {
     // читаем информацию о количестве ядер в процессоре
-    int max_thread = (int) sysconf(_SC_NPROCESSORS_ONLN) - 1;
+    int max_thread = (int) sysconf(_SC_NPROCESSORS_ONLN) / 2 - 1;
 
     int col_on_thread = *col / max_thread;
     int col_on_main_thread = *col % max_thread;

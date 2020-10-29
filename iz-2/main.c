@@ -1,9 +1,10 @@
+/** в main() происходит взаимодействие с пользователем **/
 
 #include "reflection_matrix.h"
 
-int main(int argc, char *argv[]) {
-
-    matrix_reflection_file(argv[0], argv[1]);
+int main() {
+    printf("Input number row, col and matrix\n");
+    matrix_reflection_stream(stdin, stdout);
 
     return 0;
 }
