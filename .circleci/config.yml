@@ -1,34 +1,20 @@
 jobs:
-  build:
+  build_and_test_iz-1:
     docker:
       - image: "debian:stretch"
     steps:
       - checkout
-      - run:
-          name: Installing SUDO
-          command: 'apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*'
-      - run:
-          name: Installing GCC
-          command: 'apt-get update && apt-get install -y gcc g++'
-      - run:
-          name: Installing CppCheck
-          command: 'apt-get update && apt-get install -y cppcheck'
-      - run:
-          name: Installing Valgrind
-          command: 'apt-get update && apt-get install -y valgrind'
-      - run:
-          name: Install CMAKE
-          command: 'apt-get update && sudo apt-get install -y cmake'
-      - run:
-          name: Installing Gcovr
-          command: 'apt-get update && apt-get install -y gcovr'
-      - run:
-          name: Creating Build Files
-          command: 'mkdir iz-1/build && cd iz-1/build && 
-                    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la'
-      - run:
-          name: Creating Binary Files
-          command: 'cmake --build iz-1/build --target Google_Tests_run -- -j 6 && ls -la'
+      - run: apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
+      - run: apt-get update && apt-get install -y gcc g++
+      - run: apt-get install -y cppcheck
+      - run: apt-get install -y valgrind
+      - run: apt-get install -y cmake
+      - run: apt-get install -y gcovr
+
+      - run: ls -la && mkdir iz-1/build && cd iz-1/build && 
+                    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
+      - run: cmake --build iz-1/build --target Google_Tests_run -- -j 6 && ls -la
+
       - run:
           name: Start CppCheck
           command: 'ls -la && cd iz-1 && ls -la && cppcheck src/* include/* Google_tests/AbsoluteDateTest'
@@ -38,3 +24,46 @@ jobs:
       - run:
           name: Gcovr
           command: 'cd iz-1 && gcovr -r .'
+
+  build_and_test_iz-2:
+    docker:
+      - image: "debian:stretch"
+    steps:
+      - checkout
+      - run: apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
+      - run: apt-get update && apt-get install -y gcc g++
+      - run: apt-get install -y cppcheck
+      - run: apt-get install -y valgrind
+      - run: apt-get install -y cmake
+      - run: apt-get install -y gcovr
+      - run: apt-get install -y git 
+
+      - run: ls -la && mkdir iz-2/build && cd iz-2/build && 
+                    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage -G "CodeBlocks - Unix Makefiles" .. && ls -la
+      - run: cmake --build iz-2/build --target test_naive -- -j 6
+      - run: cmake --build iz-2/build --target test_complex -- -j 6
+      - run: cmake --build iz-2/build --target iz-2 -- -j 6
+      - run: cmake --build iz-2/build --target stress_test -- -j 6
+
+      - run:
+          name: Start CppCheck
+          command: 'cd iz-2 && cppcheck src/* include/*'
+      - run:
+          name: Start Tests Static Library With Valgrind
+          command: 'cd iz-2/build && valgrind ./test_naive --gtest_filter=* --gtest_color=no'
+      - run:
+          name: Start Tests Dynamic Library With Valgrind
+          command: 'cd iz-2/build && valgrind ./test_complex --gtest_filter=* --gtest_color=no'
+      - run:
+          name: Start Stress Test
+          command: 'cd iz-2/build && ./stress_test --gtest_filter=* --gtest_color=no'
+      - run:
+          name: Gcovr
+          command: 'cd iz-2 && gcovr -r .'
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_and_test_iz-1
+      - build_and_test_iz-2
